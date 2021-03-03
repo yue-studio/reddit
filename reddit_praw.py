@@ -26,12 +26,16 @@ def getSIA(text):
 symbols = set([])
 d = {}
 senti = {}
+noSub = 0
+noComments = 0
 
 # get the top 20 hot topics 
 for submission in reddit.subreddit("wallstreetbets").hot(limit=20):
+    noSub += 1
     print(submission.title, '-', submission.url)
     submission.comments.replace_more(limit=0)
     for top_level_comment in submission.comments:
+        noComments +=1
 # get the senitment of the comment
         s = getSIA(top_level_comment.body.strip())
   
@@ -86,3 +90,6 @@ for w in sorted(d, key=d.get, reverse=True):
 # Prints the symbol and its no of occurances whenever these errors are raised 
        except (KeyError, ValueError, ZeroDivisionError, IndexError) :
            print(w, d[w])
+
+  
+print("from:",noSub, "submission and",noComments,"comments.")         
